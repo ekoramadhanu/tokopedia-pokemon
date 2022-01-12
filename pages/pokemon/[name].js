@@ -36,6 +36,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
 
 const GET_POKEMONS = gql`
     query pokemon($name: String!) {
@@ -96,9 +97,12 @@ function Detail({ name }) {
     const [probability, setProbability] = React.useState(null);
     const [pokemon, setPokemon] = React.useState('');
     const [loading, setLoading] = React.useState(false);
+    const [alert, setAlert] = React.useState(false);
+    const [alert2, setAlert2] = React.useState(false);
     const {data, isLoading} = useQuery(['data', name], () => fetchPokemon(name));
 
     const handleClickOpen = () => {
+        setAlert2(false);
         setLoading(true);        
         setTimeout(() => {
             setLoading(false);        
@@ -115,6 +119,7 @@ function Detail({ name }) {
         setOpen(false);
     };
     const save = () => {
+        setAlert(false);
         let countData = {};
         const listPokemon = [];
         let closeDialog = false;
@@ -135,6 +140,7 @@ function Detail({ name }) {
             });
             if ( typeof check == 'object' ) {
                 closeDialog = false;
+                setAlert(true);
             } else {
                 listPokemon.push({
                     name: pokemon,
@@ -161,6 +167,7 @@ function Detail({ name }) {
             }
             localStorage.setItem('count', JSON.stringify(countData));
             setOpen(false);
+            setAlert2(true);
         }
 
     };
@@ -228,7 +235,15 @@ function Detail({ name }) {
                             <Typography color="text.primary">{data.pokemon.name}</Typography>
                         </Breadcrumbs>
                     </Box>
-                    <Paper elevation={4}>
+                    {alert2 ?
+                     <>
+                        <Alert variant="outlined" severity="success">
+                            pokemon berhasil di beri nama
+                        </Alert>
+                    </>
+                    :
+                    ''}
+                    <Paper elevation={4} sx={{mt:2}}>
                         <Card>
                             <CardContent>
                                 <Grid container spacing={2} sx={{ p: 2 }}>
@@ -317,7 +332,6 @@ function Detail({ name }) {
                         keepMounted
                         onClose={handleClose}
                         aria-describedby="alert-dialog-slide-description"
-                        sx={{width: 500, mx: 'auto'}}
                         disableEscapeKeyDown
                     >
                         <DialogTitle>
@@ -328,6 +342,15 @@ function Detail({ name }) {
                         <Divider />
                         <DialogContent>
                              <DialogContentText id="alert-dialog-slide-description">
+                                {alert ? 
+                                <>
+                                    <Alert variant="outlined" severity="error">
+                                        nama pokemon sudah ada
+                                    </Alert>
+                                </>
+                                :
+                                ''
+                                }
                                {probability ? `Anda Berhasil Menangkap ${data.pokemon.name}. ` : 'Silahkan Coba Lagi Anda belum Beruntung'}
                             </DialogContentText>
                             {probability ? 
