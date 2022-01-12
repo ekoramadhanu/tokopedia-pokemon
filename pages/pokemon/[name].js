@@ -35,6 +35,7 @@ import { useQuery } from 'react-query';
 import Skeleton from '@mui/material/Skeleton';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const GET_POKEMONS = gql`
     query pokemon($name: String!) {
@@ -90,19 +91,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function detail({ name }) {    
+function Detail({ name }) {    
     const [open, setOpen] = React.useState(false);
     const [probability, setProbability] = React.useState(null);
     const [pokemon, setPokemon] = React.useState('');
+    const [loading, setLoading] = React.useState(false);
     const {data, isLoading} = useQuery(['data', name], () => fetchPokemon(name));
 
     const handleClickOpen = () => {
-        const probability = Math.round(Math.random());        
-        setProbability(probability);
-        if (probability) {
-            setPokemon(name);
-        }
-        setOpen(true);
+        setLoading(true);        
+        setTimeout(() => {
+            setLoading(false);        
+            const probability = Math.round(Math.random());        
+            setProbability(probability);
+            if (probability) {
+                setPokemon(name);
+            }
+            setOpen(true);
+        }, 2000);
     };
 
     const handleClose = () => {
@@ -171,7 +177,7 @@ function detail({ name }) {
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
                 <main>
-                    <Container>
+                    <Container sx={{ my: 9 }}>
                         <Skeleton variant="text" sx={{ py: 1}}/>
                         <Skeleton variant="rectangular" height={300}/>
                     </Container>
@@ -213,7 +219,7 @@ function detail({ name }) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main>
-                <Container>
+                <Container sx={{ my: 9 }}>
                     <Box component="div" sx={{ py: 1 }}>
                         <Breadcrumbs aria-label="breadcrumb" >
                             <Link color="text.primary" href="/">
@@ -298,7 +304,12 @@ function detail({ name }) {
                         </Card>
                     </Paper>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', my: 2 }}>
-                        <Button variant="outlined" size="medium" onClick={handleClickOpen}>Tangkap Pokemon </Button>
+                        <Button variant="outlined" size="medium" onClick={handleClickOpen}>
+                            { loading ?
+                            <CircularProgress size={20}/>
+                            :
+                            'Tangkap Pokemon'}
+                        </Button>
                     </Box>
                     <Dialog
                         open={open}
@@ -307,6 +318,7 @@ function detail({ name }) {
                         onClose={handleClose}
                         aria-describedby="alert-dialog-slide-description"
                         sx={{width: 500, mx: 'auto'}}
+                        disableEscapeKeyDown
                     >
                         <DialogTitle>
                             <Typography component="div" variant="h5">
@@ -345,4 +357,4 @@ function detail({ name }) {
     );
 }
 
-export default detail
+export default Detail

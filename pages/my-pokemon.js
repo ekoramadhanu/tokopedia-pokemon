@@ -9,6 +9,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
 
 export default class myPokemon extends React.Component {
     constructor(props) {
@@ -53,17 +55,21 @@ export default class myPokemon extends React.Component {
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
                 <main>
-                    <Container component={"div"}>
+                    <Container component={"div"} sx={{ my: 9}}>
                         {this.state.pokemon.length === 0 ?
-                            'data tidak ditemukan'
+                            <Box >
+                                <Alert variant="outlined" severity="error">
+                                    pokemon saya belum ada silahkan tangkap terlebih dahulu
+                                </Alert>
+                            </Box>
                             :
-                            <Grid container spacing={2} sx={{ my: 2}}>
+                            <Grid container spacing={2}>
                                 {
                                     this.state.pokemon.map(item => {
                                         return(
-                                            <Grid item key={item.id} xl={3} lg={3} md={4} sm={6} xs={12} key= {item.name}>
+                                            <Grid item xl={3} lg={3} md={4} sm={6} xs={12} key= {item.name}>
                                                 <Paper elevation={4}>
-                                                    <Card sx={{ cursor: 'pointer' }}>
+                                                    <Card sx={{ cursor: 'pointer' ,height: 400 }}>
                                                         <CardMedia
                                                             component="img"
                                                             height="200"
@@ -71,12 +77,12 @@ export default class myPokemon extends React.Component {
                                                             alt={item.name}
                                                             sx={{ objectFit: 'contain', m: 1 }}
                                                         />
-                                                        <CardContent>
+                                                        <CardContent sx={{height: '10%'}}>
                                                             <Typography gutterBottom variant="h4" component="div" align="center">
                                                                 {item.name}
                                                             </Typography>
                                                         </CardContent>
-                                                        <CardActions>
+                                                        <CardActions sx={{height: '40%'}}>
                                                             <Button 
                                                                 sx={{width: '100%'}} 
                                                                 variant="contained" 

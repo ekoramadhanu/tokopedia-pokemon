@@ -5,12 +5,12 @@ export default function Layout({ children }) {
   return (
     <>
       <Navbar />
-      <Box sx={{ display: { sm: 'none', xs: 'block' } }}>
+      <Box>
         <main>{children}</main>
       </Box>
-      <Box sx={{ mt: 8, display: { sm: 'block', xs: 'none' } }}>
+      {/* <Box sx={{ mt: 8, display: { sm: 'block', xs: 'none' } }}>
         <main>{children}</main>
-      </Box>
+      </Box> */}
     </>
   )
 }

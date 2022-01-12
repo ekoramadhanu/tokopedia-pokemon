@@ -41,7 +41,7 @@ ElevationScroll.propTypes = {
     window: PropTypes.func,
 };
 
-const navbar = (props) => {
+const Navbar = (props) => {
     const [value, setValue] = React.useState('pokemon');
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -115,4 +115,4 @@ const navbar = (props) => {
     );
 }
 
-export default navbar;
+export default Navbar;

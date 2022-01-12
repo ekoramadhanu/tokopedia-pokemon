@@ -84,7 +84,7 @@ function MyApp() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <main>
-          <Container component={"div"}>
+          <Container component={"div"} sx={{ my: 9 }}>
             <Grid container spacing={1} sx={{ my: 2, display: 'flex', justifyContent: 'center' }}>
               <Grid item  xl={3} lg={3} md={4} sm={6} xs={12}>
                 <Skeleton variant="rectangular" height={300}/>
@@ -139,13 +139,13 @@ function MyApp() {
       </Head>
       <main>
         <Container component={"div"}>
-          <Grid container spacing={1} sx={{ my: 2 }}>
+          <Grid container spacing={1} sx={{ my: 9 }}>
             {data.pokemons.results.map(item => {
               return (
                 <Grid item key={item.id} xl={3} lg={3} md={4} sm={6} xs={12}>
                   <Paper elevation={4} key={item.name}>
                     <Link href={`/pokemon/${item.name}`}>
-                      <Card sx={{ cursor: 'pointer' }}>
+                      <Card sx={{ cursor: 'pointer',height: 400 }}>
                         <CardMedia
                           component="img"
                           height="200"
@@ -168,7 +168,6 @@ function MyApp() {
               );
             })}
           </Grid>
-          <Typography>Page: {offset}</Typography>
           <Box component="div" sx={{ display: { sm: 'block', xs: 'none' } }}>
               <Stack spacing={2} sx={{ mt: 1, mb: 2, flexDirection: 'row-reverse' }}>
                 <Pagination
